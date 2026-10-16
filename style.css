@@ -35,6 +35,16 @@ button {
   border: 0;
   background: none;
   cursor: pointer;
+  padding: 0; /* Safari adds its own padding, which pushes emoji off-centre */
+}
+
+/* Round icon buttons: centre the emoji box exactly. */
+.add, .mic, .play, .check, .nav, .dur-btn, .dg-arrow, .moods button, .sunmoon button, .emoji-grid button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
 }
 
 button:disabled { opacity: .35; cursor: default; }

@@ -605,12 +605,14 @@ async function startRec(target, maxMs) {
     rec.start();
     recTimer = setTimeout(stopRec, maxMs);
     rerender(target);
-  } catch {
+  } catch (e) {
+    // Keep the browser's reason so a parent can tell "permission denied" from "not supported".
+    const reason = `${e.name || 'Error'}${e.message ? `: ${e.message}` : ''}`;
     if (target === 'wizard' && wizard) {
-      wizard.micError = true;
+      wizard.micError = reason;
       renderWizard();
     } else {
-      alert('Không mở được micro. Kiểm tra quyền micro của trình duyệt.');
+      alert(`Không mở được micro (${reason}). Kiểm tra quyền micro trong Cài đặt.`);
     }
   }
 }
@@ -717,7 +719,7 @@ function stepName(w) {
              <button class="btn big ghost" data-act="rec-play">▶ Nghe lại</button>
              <button class="btn big ghost" data-act="rec-start">🔁 Nói lại</button>
            </div>` : ''}
-         ${w.micError ? '<p class="err">Không mở được micro. Bố mẹ kiểm tra quyền micro, hoặc chọn ⌨️ Gõ chữ.</p>' : ''}`}`;
+         ${w.micError ? `<p class="err">Không mở được micro. Bố mẹ kiểm tra quyền micro (Cài đặt → Safari → Micrô), hoặc chọn ⌨️ Gõ chữ.<br><small>${esc(w.micError)}</small></p>` : ''}`}`;
 }
 
 function stepEmoji(w) {
